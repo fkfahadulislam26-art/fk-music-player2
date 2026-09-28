@@ -1,17 +1,18 @@
-# Music Player PWA
+FK Music - Music Player
 
-## Run it
-A service worker requires HTTPS or localhost. Do not open index.html directly with file://.
+Features
+- Album cover, artist and album metadata for MP3 ID3 tags
+- Favorites
+- Playlists
+- Dark / light mode
+- Animated player and equalizer
+- Android-style responsive UI
+- IndexedDB storage for songs, favorites and playlists
+- PWA install support and offline app shell
+- Custom FK Music name and app icon
 
-Example:
-- Python: `python -m http.server 8080`
-- Open: `http://localhost:8080`
+GitHub Pages
+Upload all files to the repository root and publish from main / root.
 
-## Add music
-Click "Add Music" and select one or more audio files.
-
-## Install
-Use a supported browser's install option after serving the app over HTTPS (or localhost for testing).
-
-## Important
-Selected local files are available during the current browser session. For permanent bundled songs, put MP3 files in the `music/` folder and add them as predefined tracks in `app.js`.
+Note
+Embedded album artwork and artist/album tags are read from MP3 ID3 metadata when available. Other audio formats may show fallback metadata based on the filename.

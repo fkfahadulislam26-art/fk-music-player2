@@ -2,36 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111827">
-  <meta name="description" content="A modern offline-ready music player PWA">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="FK Music — a modern offline music player with playlists, favorites and album artwork.">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <title>Music Player</title>
+  <title>FK Music</title>
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">YOUR MUSIC</p>
-        <h1>Music Player</h1>
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true"><span>♫</span></div>
+        <div>
+          <p class="eyebrow">YOUR MUSIC</p>
+          <h1>FK Music</h1>
+        </div>
       </div>
-      <button id="installBtn" class="icon-btn" title="Install app" hidden>＋</button>
+      <div class="top-actions">
+        <button id="themeBtn" class="icon-btn" title="Toggle theme" aria-label="Toggle dark or light mode">☀️</button>
+        <button id="installBtn" class="icon-btn" title="Install app" aria-label="Install app" hidden>＋</button>
+      </div>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="cover" id="cover">
-          <span>♪</span>
+      <section class="hero" id="homeSection">
+        <div class="cover-wrap">
+          <div class="cover" id="cover"><span>♫</span></div>
+          <div class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <div class="track-info">
           <p class="eyebrow">NOW PLAYING</p>
           <h2 id="title">No song selected</h2>
           <p id="artist">Choose a song from your library</p>
+          <p id="album" class="sub-meta">—</p>
+          <button id="favoriteNowBtn" class="favorite-now" type="button" title="Favorite" aria-label="Favorite current song">♡</button>
         </div>
       </section>
 
-      <section class="player-card">
+      <section class="player-card" id="playerCard">
         <audio id="audio" preload="metadata"></audio>
         <div class="progress-row">
           <span id="currentTime">0:00</span>
@@ -40,11 +51,11 @@
         </div>
 
         <div class="controls">
-          <button id="shuffleBtn" class="control-btn" title="Shuffle">🔀</button>
-          <button id="prevBtn" class="control-btn" title="Previous">⏮</button>
-          <button id="playBtn" class="play-btn" title="Play">▶</button>
-          <button id="nextBtn" class="control-btn" title="Next">⏭</button>
-          <button id="repeatBtn" class="control-btn" title="Repeat">🔁</button>
+          <button id="shuffleBtn" class="control-btn" title="Shuffle" aria-label="Shuffle">🔀</button>
+          <button id="prevBtn" class="control-btn" title="Previous" aria-label="Previous">⏮</button>
+          <button id="playBtn" class="play-btn" title="Play" aria-label="Play">▶</button>
+          <button id="nextBtn" class="control-btn" title="Next" aria-label="Next">⏭</button>
+          <button id="repeatBtn" class="control-btn" title="Repeat" aria-label="Repeat">🔁</button>
         </div>
 
         <div class="volume-row">
@@ -53,27 +64,92 @@
         </div>
       </section>
 
-      <section class="library">
+      <section class="library" id="librarySection">
         <div class="section-heading">
           <div>
             <p class="eyebrow">LIBRARY</p>
-            <h2>Your Songs</h2>
+            <h2>Your Songs <span id="songCount" class="count-pill">0</span></h2>
           </div>
           <label class="add-btn">
-            Add Music
+            ＋ Add Music
             <input id="fileInput" type="file" accept="audio/*" multiple hidden>
           </label>
         </div>
 
         <div class="search-wrap">
-          <input id="search" type="search" placeholder="Search songs..." aria-label="Search songs">
+          <span>⌕</span>
+          <input id="search" type="search" placeholder="Search songs, artists or albums..." aria-label="Search songs">
         </div>
 
         <div id="songList" class="song-list"></div>
-        <p id="emptyState" class="empty">No songs yet. Click “Add Music” to select audio files.</p>
+        <p id="emptyState" class="empty">No songs yet. Tap “Add Music” to choose audio files.</p>
+      </section>
+
+      <section class="workspace-grid">
+        <section class="panel" id="favoritesSection">
+          <div class="section-heading compact">
+            <div><p class="eyebrow">FAVORITES</p><h2>❤️ Favorite Songs</h2></div>
+          </div>
+          <div id="favoriteList" class="mini-list"></div>
+          <p id="favoriteEmpty" class="empty small">Favorite songs will appear here.</p>
+        </section>
+
+        <section class="panel" id="playlistSection">
+          <div class="section-heading compact">
+            <div><p class="eyebrow">PLAYLISTS</p><h2>📋 Your Playlists</h2></div>
+            <button id="newPlaylistBtn" class="small-btn">＋ New</button>
+          </div>
+          <div id="playlistList" class="playlist-list"></div>
+          <p id="playlistEmpty" class="empty small">Create your first playlist.</p>
+        </section>
+      </section>
+
+      <section class="panel settings-panel" id="settingsSection">
+        <div class="section-heading compact">
+          <div><p class="eyebrow">SETTINGS</p><h2>⚙️ App Settings</h2></div>
+        </div>
+        <div class="settings-row">
+          <div><strong>Theme</strong><span>Switch between dark and light mode.</span></div>
+          <button id="themeBtn2" class="small-btn">Toggle theme</button>
+        </div>
+        <div class="settings-row">
+          <div><strong>App name</strong><span>FK Music</span></div>
+          <span class="status-dot">● Ready</span>
+        </div>
+        <div class="settings-row">
+          <div><strong>Your music is private</strong><span>Audio files, favorites and playlists are stored locally on this device.</span></div>
+        </div>
       </section>
     </main>
+
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <a href="#homeSection">⌂<span>Home</span></a>
+      <a href="#librarySection">♫<span>Library</span></a>
+      <a href="#favoritesSection">♡<span>Favorites</span></a>
+      <a href="#playlistSection">☷<span>Playlists</span></a>
+      <a href="#settingsSection">⚙<span>Settings</span></a>
+    </nav>
   </div>
+
+  <dialog id="playlistDialog" class="dialog">
+    <form method="dialog" id="playlistForm">
+      <h3>Create playlist</h3>
+      <p class="dialog-copy">Give your new playlist a name.</p>
+      <input id="playlistName" type="text" maxlength="40" placeholder="e.g. Workout Mix" required>
+      <div class="dialog-actions">
+        <button type="button" class="secondary-btn" id="cancelPlaylist">Cancel</button>
+        <button type="submit" class="primary-btn">Create</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="playlistPickerDialog" class="dialog">
+    <form method="dialog">
+      <h3>Add to playlist</h3>
+      <div id="playlistPicker" class="picker-list"></div>
+      <div class="dialog-actions"><button type="submit" class="secondary-btn">Close</button></div>
+    </form>
+  </dialog>
 
   <script src="app.js"></script>
 </body>
