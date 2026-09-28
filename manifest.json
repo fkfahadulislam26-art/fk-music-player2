@@ -1,0 +1,11 @@
+{
+  "name": "Music Player",
+  "short_name": "Music Player",
+  "description": "A modern offline-ready music player.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#111827",
+  "orientation": "portrait-primary",
+  "icons": []
+}
